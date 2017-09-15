@@ -929,7 +929,7 @@ class ClickTT {
 			// Lösche nicht benötigte Spalten
 			$table = $table[1];
 			$table = preg_replace("/(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?<th[^@]*?<\/th>[^@]*?<th[^@]*?<\/th>/", 
-			"<thead><th colspan='2'>Tag Datum</th>$4$5$6<th class='center'>Ergebnis</th></thead>", $table);
+			"<thead><th>Tag</th><th>Datum</th>$4$5$6<th class='center'>Ergebnis</th></thead>", $table);
 			$table = preg_replace("/(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)/", 
 			"$1$2$6$7$8$9", $table);
 			$table = preg_replace('/\"\/cgi-bin/', '"http://ttvbw.click-tt.de/cgi-bin', $table);
