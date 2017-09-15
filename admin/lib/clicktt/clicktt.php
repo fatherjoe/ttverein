@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 require_once('verband.php');
 require_once('Roman.php');
 require_once('simple_html_dom.php');
@@ -884,18 +884,35 @@ class ClickTT {
 		//return;
 		
 		// Extrahiere Tabelle aus Ergebnisseite
-		//preg_match("/<table class=\"result-set\" cellspacing=\"0\" border=\"0\" cellpadding=\"0\" border=\"0\">(.*)<\/table>/Usi", $content, $table);
 		preg_match("/.*<table class.*=.*\"result-set\".*>(.*)<\/table>/Usi", $content, $table);
 		if (sizeof($table)==0) {
 			$table= "";
 		} else {
 		
 			$table = $table[1];
+
 			// Lösche nicht benötigte Spalten
-			$table = preg_replace("/(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?<th[^@]*?<\/th>[^@]*?<th[^@]*?<\/th>/", 
-			"<th>Tag</th><th>Datum</th><th>Zeit</th>$5$6$4", $table);
-			$table = preg_replace("/(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)/", 
-			"$1$2$3$7$8$6", $table);
+			$table = preg_replace(
+				"/(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?<th[^@]*?<\/th>[^@]*?<th[^@]*?<\/th>/",
+				"<th>Tag</th><th>Datum</th><th>Zeit</th>$5$6$4",
+				$table);
+
+			$table = preg_replace(
+				"/(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)/",
+				"$1$2$3$7$8$6",
+				$table);
+
+// Google structured data:
+//            $table = preg_replace(
+//                "/(<tr>)/",
+//                "<tr itemscope itemtype=\"http://schema.org/Event\">",
+//                $table);
+//
+//            $table = preg_replace(
+//                "/(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)/",
+//                "$1<span itemprop=\"startDate\" content=\"2017-09-17T14:00\">$2$3</span><span itemprop=\"name\">$7$8</span>$6",
+//                $table);
+
             $table = $this->replaceTextsFromClickTT($table);
 		}
 		
@@ -921,18 +938,30 @@ class ClickTT {
 
 		$content = $this->getUserAgentSite($this->buildNextMatchesUrl($club, $searchMeetings, 3, $startdate, $enddate, 1));
 		// Extrahiere Tabelle aus Ergebnisseite
-		preg_match("/.*<table class.*=.*\"result-set\".*>(.*)<\/table>/Usi", $content, $table);
+		preg_match(
+			"/.*<table class.*=.*\"result-set\".*>(.*)<\/table>/Usi",
+			$content,
+			$table);
 		
 		if (sizeof($table)==0) {
 			$table= "";
 		} else {
 			// Lösche nicht benötigte Spalten
 			$table = $table[1];
-			$table = preg_replace("/(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?<th[^@]*?<\/th>[^@]*?<th[^@]*?<\/th>/", 
-			"<thead><th>Tag</th><th>Datum</th>$4$5$6<th class='center'>Ergebnis</th></thead>", $table);
-			$table = preg_replace("/(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)/", 
-			"$1$2$6$7$8$9", $table);
-			$table = preg_replace('/\"\/cgi-bin/', '"http://ttvbw.click-tt.de/cgi-bin', $table);
+			$table = preg_replace(
+				"/(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?<th[^@]*?<\/th>[^@]*?<th[^@]*?<\/th>/",
+				"<thead><th>Tag</th><th>Datum</th>$4$5$6<th class='center'>Ergebnis</th></thead>",
+				$table);
+
+			$table = preg_replace(
+				"/(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)/",
+				"$1$2$6$7$8$9",
+				$table);
+
+			$table = preg_replace(
+				'/\"\/cgi-bin/',
+				'"http://ttvbw.click-tt.de/cgi-bin',
+				$table);
             $table = $this->replaceTextsFromClickTT($table);
 		}
 		if (strlen($table) == 0)
