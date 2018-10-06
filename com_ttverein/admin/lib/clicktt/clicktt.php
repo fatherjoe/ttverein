@@ -409,45 +409,46 @@ class ClickTT {
 		return $mannschaften;
 	}
 	
-	function getPersons($saisonStart, $alterklasse="Herren", $hinrunde=true) {
+	function getPlayers($saisonStart, $alterklasse="Herren", $hinrunde=true) {
 		if(DEBUG) {
 			$rundetext = ($hinrunde) ? "true" : "false";
 			echo "<br />getPersons($saisonStart, \"$alterklasse\", $rundetext)";
 		}
 		$seasonName = $this->getSaisonName($saisonStart);
-		$personen = array();
+		$players = array();
 
 		$offset = 0;
 		$count = 0;	
 
-		$content = file_get_contents($this->buildAufstellungUrl($seasonName, $alterklasse, $hinrunde));
+		$clickttPlayerPool = file_get_contents($this->buildPlayerPoolUrl($seasonName, $alterklasse, $hinrunde));
 		
-		if(preg_match($this->getRegExp("PersonenID"), $content, $id, PREG_OFFSET_CAPTURE) == 0)
-			$content = file_get_contents($this->buildAufstellungUrl($seasonName, $alterklasse, null));
+		if(preg_match($this->getRegExp("PersonenID"), $clickttPlayerPool, $id, PREG_OFFSET_CAPTURE) == 0)
+			$clickttPlayerPool = file_get_contents($this->buildPlayerPoolUrl($seasonName, $alterklasse, null));
 		
-		while(preg_match($this->getRegExp("PersonenID"), $content, $id, PREG_OFFSET_CAPTURE)) {
+		while(preg_match($this->getRegExp("PersonenID"), $clickttPlayerPool, $id, PREG_OFFSET_CAPTURE)) {
 			$offset = $id[1][1] + 1;
-			$content = substr($content, $offset);
+            $clickttPlayerPool = substr($clickttPlayerPool, $offset);
 	
-			preg_match($this->getRegExp("PersonenName"), $content, $name);
+			preg_match($this->getRegExp("PersonenName"), $clickttPlayerPool, $name);
 			$name = explode(", ", $name[1])	;
-	
+
 			/*
 		 	 * click-tt's Codierung ist ISO-8859-1. Strings müssen dementsprechend umgewandelt werden.
 		 	 */
-			$personen[$count]->nachname = $name[0];
-			$personen[$count]->vorname = $name[1];
-			$personen[$count++]->id = intval($id[1][0]);
+            $players[$count]->nachname = $name[0];
+			$players[$count]->vorname = $name[1];
+			$players[$count]->id = intval($id[1][0]);
+            $count++;
 		}
 		
-		return $personen;
+		return $players;
 	}
 	
 	function getPersonByName($vorname, $nachname, $saisonStart, $alterklasse="Herren", $hinrunde=true) {
 		if(DEBUG)
 			echo "<br />getPersonByName($vorname, $nachname, $saisonStart, $alterklasse, $hinrunde)";
 	
-		$personen = $this->getPersons($saisonStart, $alterklasse, $hinrunde);
+		$personen = $this->getPlayers($saisonStart, $alterklasse, $hinrunde);
 		foreach($personen as $person) {
 			if($person->nachname == $nachname && $person->vorname == $vorname) {
 				return $person;
@@ -455,7 +456,7 @@ class ClickTT {
 		}
 		
 		//In anderer Runde suchen
-		$personen = $this->getPersons($saisonStart, $alterklasse, !$hinrunde);
+		$personen = $this->getPlayers($saisonStart, $alterklasse, !$hinrunde);
 		foreach($personen as $person) {
 			if($person->nachname == $nachname && $person->vorname == $vorname) {
 				return $person;
@@ -814,7 +815,7 @@ class ClickTT {
 		return $this->clickTTUrl . "playerPortrait?federation=" . $this->verband->federation . "&season=$seasonName&person=$personID&club=" . $this->clubID;
 	}
 	
-	function buildAufstellungUrl($saisonStart, $alterklasse="Herren", $hinrunde=true) {
+	function buildPlayerPoolUrl($saisonStart, $alterklasse="Herren", $hinrunde=true) {
 		$seasonName = $this->getSaisonName($saisonStart);
 		// "/" umwandeln
 		$seasonName = urlencode($seasonName);
