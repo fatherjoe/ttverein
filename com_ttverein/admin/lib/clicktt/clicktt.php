@@ -435,6 +435,7 @@ class ClickTT {
 			/*
 		 	 * click-tt's Codierung ist ISO-8859-1. Strings müssen dementsprechend umgewandelt werden.
 		 	 */
+            $players[$count] = new stdClass();
             $players[$count]->nachname = $name[0];
 			$players[$count]->vorname = $name[1];
 			$players[$count]->id = intval($id[1][0]);
