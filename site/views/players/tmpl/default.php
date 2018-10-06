@@ -13,7 +13,7 @@ $width = $this->config['player_thumb_size'];
 	<h1 class="page-title"><?php echo $title;?></h1>
 </div>
 <div class="category-desc clearfix">
-Die aktiven Spieler des TTC Wöschbach:
+Die aktiven Spieler des TTC W&ouml;schbach:
 </div>
 </br>
 <div class="item-page clearfix">

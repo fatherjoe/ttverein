@@ -938,30 +938,18 @@ class ClickTT {
 
 		$content = $this->getUserAgentSite($this->buildNextMatchesUrl($club, $searchMeetings, 3, $startdate, $enddate, 1));
 		// Extrahiere Tabelle aus Ergebnisseite
-		preg_match(
-			"/.*<table class.*=.*\"result-set\".*>(.*)<\/table>/Usi",
-			$content,
-			$table);
+		preg_match("/.*<table class.*=.*\"result-set\".*>(.*)<\/table>/Usi", $content, $table);
 		
 		if (sizeof($table)==0) {
 			$table= "";
 		} else {
 			// Lösche nicht benötigte Spalten
 			$table = $table[1];
-			$table = preg_replace(
-				"/(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?<th[^@]*?<\/th>[^@]*?<th[^@]*?<\/th>/",
-				"<thead><th>Tag</th><th>Datum</th>$4$5$6<th class='center'>Ergebnis</th></thead>",
-				$table);
-
-			$table = preg_replace(
-				"/(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)/",
-				"$1$2$6$7$8$9",
-				$table);
-
-			$table = preg_replace(
-				'/\"\/cgi-bin/',
-				'"http://ttvbw.click-tt.de/cgi-bin',
-				$table);
+			$table = preg_replace("/(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?<th[^@]*?<\/th>[^@]*?<th[^@]*?<\/th>/", 
+			"<thead><th>Tag</th><th>Datum</th>$4$5$6<th class='center'>Ergebnis</th></thead>", $table);
+			$table = preg_replace("/(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)/", 
+			"$1$2$6$7$8$9", $table);
+			$table = preg_replace('/\"\/cgi-bin/', '"http://ttvbw.click-tt.de/cgi-bin', $table);
             $table = $this->replaceTextsFromClickTT($table);
 		}
 		if (strlen($table) == 0)
@@ -990,13 +978,14 @@ class ClickTT {
         $table = str_replace("He Kr  Kl B", "Kreisklasse B", $table);
         $table = str_replace("He Kr  Kl D4", "Kreisklasse D", $table);
         $table = str_replace("Ju Vb Kl", "Jugend VK", $table);
-        $table = str_replace("Ju Bez Li", "Jugend BezL", $table);
+        $table = str_replace("Ju Bez Li", "Jugend Bezirksliga", $table);
         $table = str_replace("Ju Bez Kl", "Jugend Bezirksklasse", $table);
         $table = str_replace("Ju Kr  Kl", "Jugend KK", $table);
         $table = str_replace("Ju Kr  Li", "Jugend KL", $table);
         $table = str_replace("Ju Pok", "Jugend Pokal", $table);
         $table = str_replace("Sm Kr  Li", "Schüler Kreisliga", $table);
         $table = str_replace("Sm Kr Kl", "Schüler Kreisklasse", $table);
+        $table = str_replace("Sm Bez Kl", "Schüler Bezirksklasse", $table);
         $table = str_replace("SG-EK Söllingen/TTC Wöschb", "SG Söll./Wöschb.", $table);
         return $table;
     }
