@@ -159,24 +159,11 @@ function printFelder($felder) {
 			xmlHttp.onreadystatechange = function () {
         		if (xmlHttp.readyState == 4) {
         			document.getElementById("bilanz").innerHTML = xmlHttp.responseText;
-				allocateSidebarHeightForPlayer();
          		}
      		};
      		xmlHttp.send(null);
  		}
 	}
-	
-	function allocateSidebarHeightForPlayer() {
-		var contentDom = document.getElementById("wrapper2");
-		var sidebarDom = document.getElementById("nav");
-		contentDom.style.height = null;
-		if((contentDom.offsetHeight) > sidebarDom.offsetHeight) {
-			sidebarDom.style.height = (contentDom.offsetHeight - 25)+"px"; 
-		} else {
-			contentDom.style.height = (sidebarDom.offsetHeight - 25)+"px"; 
-		}
-		
-	}
-/* ]]> */	
+/* ]]> */
 </script>
 	

@@ -210,7 +210,6 @@ $teamscheduleparams = '?verband=' .urlencode($this->ajax->verband)
 					wrapperDom.style.height = null;
 				}
 				document.getElementById("teamtabelle").innerHTML = xmlHttp.responseText;
-				allocateSidebarHeightForTeamTable();
 			}
 		};
 		xmlHttp.send(null);
@@ -229,28 +228,10 @@ $teamscheduleparams = '?verband=' .urlencode($this->ajax->verband)
 					wrapperDom.style.height = null;
 				}
 				document.getElementById("teamschedule").innerHTML = xmlHttp.responseText;
-				allocateSidebarHeightForTeamTable();
 			}
 		};
 		xmlHttp.send(null);
  		}
 	}
-	
-	function allocateSidebarHeightForTeamTable() {
-		var wrapperDom = document.getElementById("wrapper2");
-		var contentDom = document.getElementById("contenttable");
-		var sidebarDom = document.getElementById("nav");
-
-		contentDom.style.height = contentDom.offsetHeight+"px";
-		if((contentDom.offsetHeight) > sidebarDom.offsetHeight) {
-			sidebarDom.style.height = (contentDom.offsetHeight)+"px"; 
-		}
-		
-		wrapperDom.style.height = wrapperDom.offsetHeight+"px";
-		if((wrapperDom.offsetHeight) > sidebarDom.offsetHeight) {
-			sidebarDom.style.height = (wrapperDom.offsetHeight)+"px"; 
-		}		
-	}
-
 /* ]]> */
 </script>
