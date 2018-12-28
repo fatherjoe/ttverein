@@ -205,10 +205,18 @@ class ClickTT {
 
 
 		// Lösche nicht benötigte Spalten
-		$table = preg_replace("/(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)/", 
-		"<th colspan='3'>Termin</th>$4$5<th>Ergebnis</th>", $table);
-		$table = preg_replace("/(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)/", 
-		"$1$2$3$6$7$8", $table);
+        // Formatänderung ab 2011/12
+        if ($group < 157190) {
+            $table = preg_replace("/(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)/",
+                "<th colspan='3'>Termin</th>$3$4<th>Ergebnis</th>", $table);
+            $table = preg_replace("/(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)/",
+                "$1$2$3$5$6$7", $table);
+        } else {
+            $table = preg_replace("/(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)[^@]*?(<th[^@]*?<\/th>)/",
+                "<th colspan='3'>Termin</th>$4$5<th>Ergebnis</th>", $table);
+            $table = preg_replace("/(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)/",
+                "$1$2$3$6$7$8", $table);
+        }
 		$table = str_replace("/cgi-bin/WebObjects", "http://ttvbw.click-tt.de/cgi-bin/WebObjects", $table);
 
 		return '<h3>Spieltermine und -ergebnisse</h3><div class="table-responsive"><table class="nextmatches table table-condensed table-striped">' . $table . '</table></div>';
