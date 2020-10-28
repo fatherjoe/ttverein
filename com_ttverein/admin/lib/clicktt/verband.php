@@ -14,28 +14,22 @@ class Verband {
 		$verbaende = array();
 		$i = 0;
 		$verbaende[$i] = new stdClass();
+		$verbaende[$i]->name = "Badischer TTV";
+		$verbaende[$i]->federation = "BaTTV";
+		$verbaende[$i]->domain = "http://battv.click-tt.de";
+		$verbaende[$i++]->url = "http://battv.click-tt.de/cgi-bin/WebObjects/nuLigaTTDE.woa/wa/";
+		
+		$verbaende[$i] = new stdClass();
+		$verbaende[$i]->name = "TT Baden-Württemberg";
+		$verbaende[$i]->federation = "TTBW";
+		$verbaende[$i]->domain = "http://ttbw.click-tt.de";
+		$verbaende[$i++]->url = "http://ttbw.click-tt.de/cgi-bin/WebObjects/nuLigaTTDE.woa/wa/";
+		
+		$verbaende[$i] = new stdClass();
 		$verbaende[$i]->name = "WTTV Westdeutschland";
 		$verbaende[$i]->federation = "WTTV";
 		$verbaende[$i]->domain = "http://wttv.click-tt.de";
 		$verbaende[$i++]->url = "http://wttv.click-tt.de/cgi-bin/WebObjects/ClickWTTV.woa/wa/";
-		
-		$verbaende[$i] = new stdClass();
-		$verbaende[$i]->name = "TTVBW Württemberg-Hohenzollern";
-		$verbaende[$i]->federation = "TTVWH";
-		$verbaende[$i]->domain = "http://ttvwh.click-tt.de";
-		$verbaende[$i++]->url = "http://ttvwh.click-tt.de/cgi-bin/WebObjects/ClickTTVBW.woa/wa/";
-		
-		$verbaende[$i] = new stdClass();
-		$verbaende[$i]->name = "TTVBW Südbaden";
-		$verbaende[$i]->federation = "SbTTV";
-		$verbaende[$i]->domain = "http://ttvbw.click-tt.de";
-		$verbaende[$i++]->url = "http://ttvbw.click-tt.de/cgi-bin/WebObjects/ClickTTVBW.woa/wa/";
-		
-		$verbaende[$i] = new stdClass();
-		$verbaende[$i]->name = "TTVBW Baden";
-		$verbaende[$i]->federation = "BaTTV";
-		$verbaende[$i]->domain = "http://ttvbw.click-tt.de";
-		$verbaende[$i++]->url = "http://ttvbw.click-tt.de/cgi-bin/WebObjects/ClickTTVBW.woa/wa/";
 		
 		$verbaende[$i] = new stdClass();
 		$verbaende[$i]->name = "FTTB Bremen";

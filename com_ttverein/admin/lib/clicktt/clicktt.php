@@ -185,7 +185,10 @@ class ClickTT {
 		
 		if(!$championship || !$group)
 			return "";
-			
+
+		$teamScheduleUrl = $this->buildTeamScheduleUrl($teamtable, $championship, $group, $pageState);
+		if(DEBUG)
+			echo "<br />Reading from $teamScheduleUrl" ;
 		$content = $this->getUserAgentSite($this->buildTeamScheduleUrl($teamtable, $championship, $group, $pageState));
 		if ($content == null) 
 			return '';
@@ -203,6 +206,8 @@ class ClickTT {
             $table = "Keine Informationen verfügbar";
 		}
 
+		if(DEBUG)
+			echo "<br />extracted from click-tt:<br />$table";
 
 		// Lösche nicht benötigte Spalten
         // Formatänderung ab 2011/12
@@ -217,7 +222,10 @@ class ClickTT {
             $table = preg_replace("/(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)/",
                 "$1$2$3$6$7$8", $table);
         }
-		$table = str_replace("/cgi-bin/WebObjects", "http://ttvbw.click-tt.de/cgi-bin/WebObjects", $table);
+        $table = str_replace('href="/cgi-bin/WebObjects/', 'target="_blank" href="' . $this->verband->domain . '/cgi-bin/WebObjects/', $table);
+
+        if(DEBUG)
+            echo "<br />after replacement:<br />$table";
 
 		return '<h3>Spieltermine und -ergebnisse</h3><div class="table-responsive"><table class="nextmatches table table-condensed table-striped">' . $table . '</table></div>';
 	}
@@ -443,6 +451,8 @@ class ClickTT {
 			/*
 		 	 * click-tt's Codierung ist ISO-8859-1. Strings müssen dementsprechend umgewandelt werden.
 		 	 */
+            if(DEBUG)
+                echo "$count:$name[0],$name[1]";
             $players[$count] = new stdClass();
             $players[$count]->nachname = $name[0];
 			$players[$count]->vorname = $name[1];
@@ -959,7 +969,7 @@ class ClickTT {
 			"<thead><th>Tag</th><th>Datum</th>$4$5$6<th class='center'>Ergebnis</th></thead>", $table);
 			$table = preg_replace("/(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)[^@]*?(<td[^@]*?<\/td>)/", 
 			"$1$2$6$7$8$9", $table);
-			$table = preg_replace('/\"\/cgi-bin/', '"http://ttvbw.click-tt.de/cgi-bin', $table);
+            $table = str_replace('href="/cgi-bin/', 'target="_blank" href="' . $this->verband->domain . '/cgi-bin/', $table);
             $table = $this->replaceTextsFromClickTT($table);
 		}
 		if (strlen($table) == 0)
